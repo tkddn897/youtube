@@ -1,0 +1,23 @@
+import React, { useEffect, useState } from "react";
+import "./app.css";
+import VideoList from "./components/video_list/video_list";
+
+function App() {
+  const [videos, setVidesos] = useState([]);
+  useEffect(()=>{
+    const requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    };
+    
+    fetch("https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&maxResults=25&key=AIzaSyAHHDw4EK2PmFyz8YlZ-sbMES-qx6P1ACM", requestOptions)
+      .then(response => response.json())
+      .then(result => setVidesos(result.items))
+      .catch(error => console.log('error', error));
+    console.log('useEffect');
+  }, []);
+
+  return <VideoList videos={videos}/>;
+}
+
+export default App;
